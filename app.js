@@ -1,39 +1,29 @@
-/*
- *
- *   <div id="parent">
- *       <div id="child1">
- *           <h1>I am h1 tag</h1>
- *           <h2>I am h1 tag</h2>
- *       </div>
- *       <div id="child2">
- *           <h1>I am h1 tag</h1>
- *           <h2>I am h1 tag</h2>
- *       </div>
- *   </div>
- *
- *
- */
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-const parent = React.createElement("div", { id: "parent" }, [
-  React.createElement("div", { id: "child1" }, [
-    React.createElement("h1", {}, "I am a H1 tag"),
-    React.createElement("h2", {}, "I am a H2 tag"),
-  ]),
-  React.createElement("div", { id: "child2" }, [
-    React.createElement("h1", {}, "I am a H1 tag"),
-    React.createElement("h2", {}, "I am a H2 tag"),
-  ]),
-]);
+const heading = <h1 id="heading">Welcome to my page 🚀</h1>;
 
-const heading = React.createElement(
-  "h1",
-  { className: "abc", id: "heading" },
-  "Hello world from react!"
-);
+// React components
+// Class Based Component - OLD
+// Functional Component - NEW
+
+const Title = () => {
+  return (
+    <div className="head">
+      <h1>Namaste react using JSX 🚀</h1>
+    </div>
+  );
+};
+
+// Component Composition
+const HeadingComponent = () => {
+  return (
+    <div id="container">
+      <Title />
+      <h1>Namaste React Functional Component!</h1>
+    </div>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
-root.render(parent);
+root.render(<HeadingComponent />);
