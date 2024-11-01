@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 
 const Body = () => {
-  //   const [intialListOfRestaurants, setInitialListOfRestaurants] = useState([]);
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [topRestaurantFilter, setTopRestaurantFilter] = useState(false);
@@ -13,6 +12,35 @@ const Body = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const removeDuplicates = (arr) => {
+    const uniqueArray = arr.filter(
+      (item, index, self) =>
+        index ===
+        self.findIndex((obj) => JSON.stringify(obj) === JSON.stringify(item))
+    );
+    return uniqueArray;
+  };
+
+  useEffect(() => {
+    let tmpRes1 = [];
+    let tmpRes2 = [];
+    const searchResult = filterSearch(listOfRestaurants, searchText);
+    const topResult = filterTopRated(
+      searchResult.length ? searchResult : listOfRestaurants,
+      topRestaurantFilter
+    );
+
+    tmpRes1 = searchResult.length ? searchResult : [];
+    tmpRes2 = topResult.length ? topResult : [];
+    let finalRes = tmpRes1.concat(tmpRes2).length
+      ? removeDuplicates(tmpRes1.concat(tmpRes2))
+      : [];
+
+    if (!finalRes.length) finalRes = listOfRestaurants;
+    setFilteredRestaurants(finalRes);
+    setResultsCount(finalRes.length);
+  }, [searchText, topRestaurantFilter]);
 
   const fetchData = async () => {
     const data = await fetch(
@@ -35,6 +63,22 @@ const Body = () => {
     );
   };
 
+  const filterSearch = (restaurants, searchInput) => {
+    let filteredRes = restaurants.filter((restaurant) =>
+      restaurant?.info?.name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    return searchInput !== "" ? filteredRes : [];
+  };
+
+  const filterTopRated = (restaurants, topResFlag) => {
+    let filteredRes = restaurants.filter(
+      (restaurant) => restaurant?.info?.avgRating > 4.4
+    );
+
+    return topResFlag ? filteredRes : [];
+  };
+
   return (
     <div className="body">
       <div className="filter">
@@ -44,48 +88,15 @@ const Body = () => {
           value={searchText}
           onChange={(e) => {
             setSearchText(e.target.value);
+            filterSearch(listOfRestaurants, searchText);
           }}
         />
-        <button
-          className="search-btn"
-          onClick={() => {
-            let searchFilteredRes = filteredRestaurants.filter((restaurant) =>
-              restaurant?.info?.name
-                .toLowerCase()
-                .includes(searchText.toLowerCase())
-            );
-            if (searchText === "" && !topRestaurantFilter) {
-              setFilteredRestaurants(listOfRestaurants);
-              setResultsCount(listOfRestaurants.length);
-            } else {
-              setFilteredRestaurants(searchFilteredRes);
-              setResultsCount(searchFilteredRes.length);
-            }
-          }}
-        >
+        <button className="search-btn" onClick={() => {}}>
           Search
         </button>
         <button
           className={"filter-btn " + (topRestaurantFilter ? "clicked" : "")}
           onClick={() => {
-            if (!topRestaurantFilter) {
-              let topRatedFilteredRes = filteredRestaurants.filter(
-                (restaurant) => restaurant?.info?.avgRating > 4
-              );
-              setFilteredRestaurants(topRatedFilteredRes);
-              setResultsCount(topRatedFilteredRes.length);
-            } else if (searchText !== "") {
-              let searchFilteredRes = listOfRestaurants.filter((restaurant) =>
-                restaurant?.info?.name
-                  .toLowerCase()
-                  .includes(searchText.toLowerCase())
-              );
-              setFilteredRestaurants(searchFilteredRes);
-              setResultsCount(searchFilteredRes.length);
-            } else {
-              setFilteredRestaurants(listOfRestaurants);
-              setResultsCount(listOfRestaurants.length);
-            }
             setTopRestaurantFilter(!topRestaurantFilter);
           }}
         >
