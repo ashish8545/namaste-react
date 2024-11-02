@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "@fontsource/montserrat";
 import "@fontsource/montserrat/100.css";
@@ -11,7 +11,7 @@ import Error from "./components/error";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 // import RestaurantMenu from "./components/RestaurantMenu";
 import useOnlineStatus from "./utils/useOnlineStatus";
-import Shimmer from "./components/Shimmer";
+import UserContext from "./utils/UserContext";
 
 const Body = lazy(() => import("./components/Body"));
 const About = lazy(() => import("./components/About"));
@@ -20,16 +20,26 @@ const RestaurantMenu = lazy(() => import("./components/RestaurantMenu"));
 
 const AppLayout = () => {
   const onlineStatus = useOnlineStatus();
+
+  // authentication
+  const [userName, setUserName] = useState();
+
+  useEffect(() => {
+    setUserName("Ashish Shinde");
+  }, []);
+
   return (
     <div className="app">
-      <Header />
-      {!onlineStatus ? (
-        <h3>
-          Looks like you're offline!! Please check your internet connection.
-        </h3>
-      ) : (
-        <Outlet />
-      )}
+      <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
+        <Header />
+        {!onlineStatus ? (
+          <h3>
+            Looks like you're offline!! Please check your internet connection.
+          </h3>
+        ) : (
+          <Outlet />
+        )}
+      </UserContext.Provider>
     </div>
   );
 };

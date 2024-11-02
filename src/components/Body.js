@@ -1,8 +1,9 @@
-import RestaurantCard from "./RestaurantCard";
-import { useEffect, useState } from "react";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
+import { useEffect, useState, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useRestaurants from "../utils/useRestaurants";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -12,6 +13,10 @@ const Body = () => {
   const [searchText, setSearchText] = useState("");
 
   const restaurants = useRestaurants();
+
+  const { loggedInUser, setUserName } = useContext(UserContext);
+
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
 
   const removeDuplicates = (arr) => {
     const uniqueArray = arr.filter(
@@ -80,38 +85,56 @@ const Body = () => {
   return (
     <div className="body">
       <div className="filter">
-        <input
-          type="text"
-          className="search-box"
-          value={searchText}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-            filterSearch(listOfRestaurants, searchText);
-          }}
-          placeholder="Search"
-        />
-        <button
-          className={"filter-btn " + (topRestaurantFilter ? "clicked" : "")}
-          onClick={() => {
-            setTopRestaurantFilter(!topRestaurantFilter);
-          }}
-        >
-          Above 4 Stars
-        </button>
-        <span className="showing-results-span">
-          ({resultsCount} restaurants found)
-        </span>
+        <div className="search m-4 p-4">
+          <input
+            placeholder="Update user name"
+            className="border border-black"
+            value={loggedInUser}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          />
+          <input
+            type="text"
+            className="border border-solid border-gray-300 mr-4 px-2"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+              filterSearch(listOfRestaurants, searchText);
+            }}
+            placeholder="Search"
+          />
+          <button
+            className={
+              "filter-btn " +
+              (topRestaurantFilter ? "clicked" : "") +
+              "bg-yellow-200 mr-4 px-2 py-1 text-sm rounded-md text-gray-600"
+            }
+            onClick={() => {
+              setTopRestaurantFilter(!topRestaurantFilter);
+            }}
+          >
+            Above 4 Stars
+          </button>
+          <span className="text-sm italic text-gray-600">
+            ({resultsCount} restaurants found)
+          </span>
+        </div>
       </div>
       {filteredRestaurants.length === 0 ? (
         <Shimmer />
       ) : (
-        <div className="res-container">
+        <div className="flex flex-wrap">
           {filteredRestaurants.map((restaurant) => (
             <Link
               key={restaurant.info.id}
               to={"/restaurants/" + restaurant.info.id}
             >
-              <RestaurantCard resData={restaurant} />
+              {restaurant?.info?.promoted ? (
+                <RestaurantCard resData={restaurant} />
+              ) : (
+                <RestaurantCardPromoted resData={restaurant} />
+              )}
             </Link>
           ))}
         </div>
