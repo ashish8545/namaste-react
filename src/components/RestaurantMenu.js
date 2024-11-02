@@ -1,19 +1,28 @@
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import { MENU_API } from "../utils/constants";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
 
 const RestaurantMenu = () => {
-  const [resInfo, setResInfo] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
   const [filteredMenuItems, setFilteredMenuItems] = useState([]);
   const [isVegChecked, setIsVegChecked] = useState(false);
   const [isNonVegChecked, setIsNonVegChecked] = useState(false);
   const { resId } = useParams();
+  const resInfo = useRestaurantMenu(resId);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (resInfo) {
+      setMenuItems(
+        resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card
+          ?.card?.itemCards
+      );
+      setFilteredMenuItems(
+        resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card
+          ?.card?.itemCards
+      );
+    }
+  }, [resInfo]);
 
   useEffect(() => {
     if (resInfo) {
@@ -31,24 +40,10 @@ const RestaurantMenu = () => {
     }
   }, [isVegChecked, isNonVegChecked]);
 
-  const fetchData = async () => {
-    const data = await fetch(MENU_API + resId);
-    const json = await data.json();
-    setResInfo(json?.data);
-    setMenuItems(
-      json?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card
-        ?.card?.itemCards
-    );
-    setFilteredMenuItems(
-      json?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card
-        ?.card?.itemCards
-    );
-  };
-
   if (resInfo === null) return <Shimmer />;
 
   const { name, cuisines, costForTwoMessage } =
-    resInfo?.cards[2]?.card.card.info;
+    resInfo?.cards[2]?.card?.card?.info;
 
   return (
     <div className="restaurant-menu-container">

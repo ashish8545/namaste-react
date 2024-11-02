@@ -2,6 +2,7 @@ import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useRestaurants from "../utils/useRestaurants";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -10,9 +11,7 @@ const Body = () => {
   const [resultsCount, setResultsCount] = useState(0);
   const [searchText, setSearchText] = useState("");
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const restaurants = useRestaurants();
 
   const removeDuplicates = (arr) => {
     const uniqueArray = arr.filter(
@@ -22,6 +21,25 @@ const Body = () => {
     );
     return uniqueArray;
   };
+
+  useEffect(() => {
+    if (restaurants) {
+      setListOfRestaurants(
+        restaurants?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
+      );
+
+      setFilteredRestaurants(
+        restaurants?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
+      );
+
+      setResultsCount(
+        restaurants?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants?.length
+      );
+    }
+  }, [restaurants]);
 
   useEffect(() => {
     let tmpRes1 = [];
@@ -42,27 +60,6 @@ const Body = () => {
     setFilteredRestaurants(finalRes);
     setResultsCount(finalRes.length);
   }, [searchText, topRestaurantFilter]);
-
-  const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=19.9974533&lng=73.78980229999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
-
-    const json = await data.json();
-
-    setListOfRestaurants(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-
-    setFilteredRestaurants(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-
-    setResultsCount(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-        ?.length
-    );
-  };
 
   const filterSearch = (restaurants, searchInput) => {
     let filteredRes = restaurants.filter((restaurant) =>
