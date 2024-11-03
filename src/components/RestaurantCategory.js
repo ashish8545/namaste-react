@@ -1,9 +1,9 @@
 import { useState } from "react";
 import ItemList from "./ItemList";
 
-const RestaurantCategory = ({ data, showItemsList, setShowIndex }) => {
+const RestaurantCategory = ({ data, showItemsList, setShowIndex, index }) => {
   const handleCollapse = () => {
-    setShowIndex();
+    setShowIndex(showItemsList ? null : index);
   };
   return (
     <div className="bg-gray-100 w-6/12 my-6 mx-auto pt-4 px-6 shadow-lg">
