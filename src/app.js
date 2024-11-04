@@ -3,13 +3,8 @@ import ReactDOM from "react-dom/client";
 import "@fontsource/montserrat";
 import "@fontsource/montserrat/100.css";
 import Header from "./components/Header";
-// import Body from "./components/Body";
-// import About from "./components/About";
-
-// import Contact from "./components/Contact";
 import Error from "./components/error";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-// import RestaurantMenu from "./components/RestaurantMenu";
 import useOnlineStatus from "./utils/useOnlineStatus";
 import UserContext from "./utils/UserContext";
 import Shimmer from "./components/Shimmer";

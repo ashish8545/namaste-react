@@ -1,0 +1,82 @@
+{
+  "info": {
+    "id": "68941",
+    "name": "Hari Om Dhabha",
+    "cloudinaryImageId": "ktmesac7l9n4f5go1zng",
+    "locality": "Panchavati",
+    "areaName": "Indira Nagar",
+    "costForTwo": "₹400 for two",
+    "cuisines": ["Maharashtrian", "North Indian", "Chinese"],
+    "avgRating": 4.3,
+    "veg": true,
+    "parentId": "93825",
+    "avgRatingString": "4.3",
+    "totalRatingsString": "15K+",
+    "sla": {
+      "deliveryTime": 35,
+      "lastMileTravel": 3.7,
+      "serviceability": "SERVICEABLE",
+      "slaString": "30-35 mins",
+      "lastMileTravelString": "3.7 km",
+      "iconType": "ICON_TYPE_EMPTY"
+    },
+    "availability": {
+      "nextCloseTime": "2024-11-04 23:30:00",
+      "opened": true
+    },
+    "badges": {
+      "imageBadges": [
+        {
+          "imageId": "Green%20Dot%20Awards/Best%20In%20Pure%20Veg.png",
+          "description": "Delivery!"
+        }
+      ]
+    },
+    "isOpen": true,
+    "type": "F",
+    "badgesV2": {
+      "entityBadges": {
+        "imageBased": {
+          "badgeObject": [
+            {
+              "attributes": {
+                "description": "Delivery!",
+                "imageId": "Green%20Dot%20Awards/Best%20In%20Pure%20Veg.png"
+              }
+            }
+          ]
+        },
+        "textBased": {},
+        "textExtendedBadges": {}
+      }
+    },
+    "aggregatedDiscountInfoV3": {
+      "header": "₹125 OFF",
+      "subHeader": "ABOVE ₹199",
+      "discountTag": "FLAT DEAL"
+    },
+    "differentiatedUi": {
+      "displayType": "ADS_UI_DISPLAY_TYPE_ENUM_DEFAULT",
+      "differentiatedUiMediaDetails": {
+        "lottie": {},
+        "video": {}
+      }
+    },
+    "reviewsSummary": {},
+    "displayType": "RESTAURANT_DISPLAY_TYPE_DEFAULT",
+    "restaurantOfferPresentationInfo": {},
+    "externalRatings": {
+      "aggregatedRating": {
+        "rating": "--"
+      }
+    },
+    "ratingsDisplayPreference": "RATINGS_DISPLAY_PREFERENCE_SHOW_SWIGGY"
+  },
+  "analytics": {
+    "context": "seo-data-ab2bf2d2-5e8d-48c6-b721-ca5214ad72f3"
+  },
+  "cta": {
+    "link": "https://www.swiggy.com/city/nashik/hari-om-dhabha-panchavati-indira-nagar-rest68941",
+    "type": "WEBLINK"
+  }
+}
